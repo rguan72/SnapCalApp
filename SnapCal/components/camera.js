@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button } from 'react-native';
 import { Camera, Permissions } from 'expo';
+import * as firebase from 'firebase';
+let apikey = require('../../apikey.json');
 
 export default class ModCamera extends Component {
   state = {
@@ -13,7 +15,58 @@ export default class ModCamera extends Component {
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
-  }
+  };
+
+  async takePicture() {
+    if (this.camera) {
+      const options = { quality: 0.5,
+                        base64: true,
+                        skipProcessing: true,
+                        forceUpOrientation: true};
+
+      const data = await this.camera.takePictureAsync(options);
+      let body_data = {
+        "requests": [
+          {
+          "image": {
+            "content": data.base64
+          },
+
+        "features": [
+          {
+            "type": "DOCUMENT_TEXT_DETECTION"
+          }
+        ]
+      }
+    ]
+    }
+    let url = 'https://vision.googleapis.com/v1/images:annotate?key=' + apikey.apikey;
+    let req = new Request(
+      url,
+      {
+        method: 'POST',
+        headers:  {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body_data)
+      }
+    );
+
+    fetch(req)
+      .then((response) => {
+        if (response.status !== 200) {
+          console.log('Issue encountered: Status Code -- ' + response.status);
+          return;
+        }
+        else {
+          response.json().then((data) => {
+            console.log(data.responses[0].fullTextAnnotation.text);
+          });
+        }
+      });
+    }
+  };
 
   render() {
     const { hasCameraPermission } = this.state;
@@ -25,7 +78,13 @@ export default class ModCamera extends Component {
     } else {
       return (
         <View style={styles.container}>
-          <Camera style={styles.camera} type={this.state.type}>
+          <Camera
+            ref = {ref => {
+              this.camera = ref;
+            }}
+            style={styles.camera}
+            type={this.state.type}
+          >
             <TouchableOpacity
                 style={{
                   flex: 0.1,
@@ -47,7 +106,7 @@ export default class ModCamera extends Component {
               <Button
                 style={styles.button}
                 title="Hi!"
-                onPress={() => {console.log('hi')}}
+                onPress={this.takePicture.bind(this)}
                 color="#841584"
               />
           </Camera>
@@ -56,6 +115,13 @@ export default class ModCamera extends Component {
     }
   }
 }
+
+// Initialize firebase
+const firebaseConfig = {
+  apiKey: 'AIzaSyBL_ec68lNF7vZ8tvVA0AsLRsfIh0XW15k'
+};
+
+firebase.initializeApp(firebaseConfig);
 
 const styles = StyleSheet.create({
   container: {
