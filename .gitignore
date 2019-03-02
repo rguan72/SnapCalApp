@@ -56,6 +56,9 @@ node_modules
 /bots/node_modules/
 package-lock.json
 
+# VSCode
+.vscode
+
 # OS X
 .DS_Store
 
@@ -80,4 +83,6 @@ npm-debug.*
 *.p12
 *.key
 *.mobileprovision
+
+# Sensitive info
 apikey.json
