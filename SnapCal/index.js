@@ -14,6 +14,7 @@ const MyStatusBar = ({backgroundColor, ...props}) => (
 class Index extends Component {
   state = {
     startCamera: false,
+    startImagePicker: false,
   };
 
   render() {
@@ -37,14 +38,25 @@ class Index extends Component {
         </View>
         <View style={styles.content}>
           <View style={styles.random}/>
-          <Button 
-            buttonStyle={styles.cameraButton}
-            onPress={() => this.setState ({startCamera: true})}
-            icon={<Icon name={Platform.OS == 'ios' ? 'ios-camera' : 'md-camera'} size={30} backgroundColor='transparent' color='white'/>}
-            raised={true}
-          />
+          <View style={styles.buttonContainer}>
+            <Button
+              buttonStyle={styles.cameraButton}
+              onPress={() => this.setState ({startCamera: true})}
+              icon={<Icon name={Platform.OS == 'ios' ? 'ios-camera' : 'md-camera'} size={30} backgroundColor='transparent' color='white'/>}
+              raised={true}
+            />
+            <Button
+              buttonStyle={styles.cameraButton}
+              onPress={() => this.setState ({startImagePicker: true})}
+              icon={<Icon name={Platform.OS == 'ios' ? 'ios-image' : 'md-image'} size={30} backgroundColor='transparent' color='white'/>}
+              raised={true}
+            />
+          </View>
         </View>
         <Modal visible={this.state.startCamera} onRequestClose={() => this.setState ({startCamera: false})}>
+            <ModCamera/>
+        </Modal>
+        <Modal visible={this.state.startImagePicker} onRequestClose={() => this.setState ({startImagePicker: false})}>
             <ImagePicker/>
         </Modal>
       </View>
@@ -91,6 +103,11 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height * 0.75,
   },
 
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+
   cameraButton: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -98,6 +115,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderRadius: 100,
     padding: 15,
+    width: Dimensions.get('window').width * 0.175,
+    height: Dimensions.get('window').width * 0.175,
   }
 });
 
