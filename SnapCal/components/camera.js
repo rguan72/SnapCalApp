@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 import { Button } from 'react-native';
 import { Camera, Permissions } from 'expo';
 import * as firebase from 'firebase';
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
-    width: 1000,
+    width: Dimensions.get('window').width,
     justifyContent: 'flex-end',
     alignItems: 'center'
   },

@@ -3,7 +3,8 @@ import { AppRegistry, StyleSheet, Text, View, Modal, Dimensions, Platform, Statu
 import { Button, withTheme } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ModCamera from './components/camera';
-import ImagePicker from './components/image-picker'
+import ImagePicker from './components/image-picker';
+import CalendarUI from './components/CalendarUI';
 
 const MyStatusBar = ({backgroundColor, ...props}) => (
   <View style={[styles.statusBar, { backgroundColor }]}>
@@ -57,6 +58,7 @@ class Index extends Component {
         <Modal visible={this.state.startImagePicker} onRequestClose={() => this.setState ({startImagePicker: false})}>
             <ImagePicker/>
         </Modal>
+        <CalendarUI/>
       </View>
     );
   }
