@@ -39,6 +39,9 @@ buck-out
 # Watchman
 .watchmanconfig
 
+# VSCode
+.vscode
+
 # Android
 .idea
 .gradle
@@ -52,6 +55,9 @@ node_modules
 .nvm
 /bots/node_modules/
 package-lock.json
+
+# VSCode
+.vscode
 
 # OS X
 .DS_Store
@@ -78,3 +84,7 @@ npm-debug.*
 *.key
 *.mobileprovision
 .vscode
+
+# Sensitive info
+apikey.json
+
