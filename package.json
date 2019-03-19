@@ -24,7 +24,8 @@
     "react-transition-group": "^2.6.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-preset-expo": "^5.0.0",
+    "react-navigation": "^3.4.1"
   },
   "private": true
 }

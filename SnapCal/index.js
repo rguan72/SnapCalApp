@@ -1,9 +1,10 @@
 import React, { Component, Fragment} from 'react';
 import { AppRegistry, StyleSheet, Text, View, Modal, Dimensions, Platform, StatusBar} from 'react-native';
 import { Button, withTheme } from 'react-native-elements';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ModCamera from './components/camera';
-import ImagePicker from './components/image-picker';
+import ImagePickerScreen from './components/image-picker';
 import CalendarUI from './components/CalendarUI';
 
 const MyStatusBar = ({backgroundColor, ...props}) => (
@@ -13,19 +14,6 @@ const MyStatusBar = ({backgroundColor, ...props}) => (
 );
 
 class Index extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      startCamera: false,
-      startImagePicker: true,
-    };
-
-    this.toImagePicker = this.toImagePicker.bind(this);
-  }
-
-  toImagePicker() {
-    this.setState({ startCamera: false, startImagePicker: true });
-  }
 
   render() {
     return (
@@ -51,29 +39,12 @@ class Index extends Component {
           <View style={styles.buttonContainer}>
             <Button
               buttonStyle={styles.cameraButton}
-              onPress={() => this.setState ({startCamera: true})}
-              icon={<Icon name={Platform.OS == 'ios' ? 'ios-camera' : 'md-camera'} size={30} backgroundColor='transparent' color='white'/>}
-              raised={true}
-            />
-            <Button
-              buttonStyle={styles.cameraButton}
-              onPress={() => this.setState ({startImagePicker: true})}
+              onPress={ () => {this.props.navigation.push('ImagePicker')} }
               icon={<Icon name={Platform.OS == 'ios' ? 'ios-image' : 'md-image'} size={30} backgroundColor='transparent' color='white'/>}
               raised={true}
             />
           </View>
         </View>
-        <Modal visible={this.state.startCamera} onRequestClose={() => this.setState ({startCamera: false})}>
-            <ModCamera
-              action={this.toImagePicker}
-            />
-        </Modal>
-        <Modal visible={this.state.startImagePicker} onRequestClose={() => this.setState ({startImagePicker: false})}>
-            <ImagePicker/>
-        </Modal>
-        <Modal visible={!this.state.startImagePicker} onRequestClose={() => this.setState ({startImagePicker: true})}>
-          <Calendar/>
-        </Modal>
       </View>
     );
   }
@@ -135,6 +106,22 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('App', () => Index);
+const AppNavigator = createStackNavigator(
+  {
+    Home: Index,
+    Calendar: CalendarUI,
+    ImagePicker: ImagePickerScreen
+  },
+  {
+    initialRouteName: "Home"
+  }
 
-export default Index;
+);
+
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends React.Component {
+  render() {
+    return <AppContainer />
+  }
+}

@@ -36,6 +36,7 @@ export default class CalendarUI extends Component {
           title="add event"
           onPress={this.addEvent}
         />
+        <Text> YOYOYOYO </Text>
       </View>
     );
   }
