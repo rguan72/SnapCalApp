@@ -77,3 +77,4 @@ npm-debug.*
 *.p12
 *.key
 *.mobileprovision
+.vscode

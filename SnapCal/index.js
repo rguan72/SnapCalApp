@@ -1,6 +1,6 @@
 import React, { Component, Fragment} from 'react';
 import { AppRegistry, StyleSheet, Text, View, Modal, Dimensions, Platform, StatusBar} from 'react-native';
-import { Button, withTheme } from 'react-native-elements'; 
+import { Button, withTheme } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ModCamera from './components/camera';
 import ImagePicker from './components/image-picker'
@@ -12,24 +12,33 @@ const MyStatusBar = ({backgroundColor, ...props}) => (
 );
 
 class Index extends Component {
-  state = {
-    startCamera: false,
-    startImagePicker: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      startCamera: false,
+      startImagePicker: true,
+    };
+
+    this.toImagePicker = this.toImagePicker.bind(this);
+  }
+
+  toImagePicker() {
+    this.setState({ startCamera: false, startImagePicker: true });
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <MyStatusBar backgroundColor="#5E8D48" barStyle="light-content" />
         <View style={styles.appBar}>
-          <Button 
+          <Button
             type='clear'
             onPress={() => alert ('menu')}
             icon={<Icon name={Platform.OS == 'ios' ? 'ios-menu' : 'md-menu'} size={30} backgroundColor='transparent' color='white'/>}
             raised={true}
           />
           <Text style={styles.title} adjustsFontSizeToFit={true} numberOfLines={1}>SnapCal</Text>
-          <Button 
+          <Button
             type='clear'
             onPress={() => alert ('settings')}
             icon={<Icon name={Platform.OS == 'ios' ? 'ios-settings' : 'md-settings'} size={30} backgroundColor='transparent' color='white'/>}
@@ -54,10 +63,15 @@ class Index extends Component {
           </View>
         </View>
         <Modal visible={this.state.startCamera} onRequestClose={() => this.setState ({startCamera: false})}>
-            <ModCamera/>
+            <ModCamera
+              action={this.toImagePicker}
+            />
         </Modal>
         <Modal visible={this.state.startImagePicker} onRequestClose={() => this.setState ({startImagePicker: false})}>
             <ImagePicker/>
+        </Modal>
+        <Modal visible={!this.state.startImagePicker} onRequestClose={() => this.setState ({startImagePicker: true})}>
+          <Calendar/>
         </Modal>
       </View>
     );
@@ -74,7 +88,7 @@ const styles = StyleSheet.create({
   statusBar: {
     height: Platform.OS == 'ios' ? 0 : StatusBar.currentHeight,
   },
-  
+
   appBar: {
     backgroundColor:'#79B45D',
     height: APPBAR_HEIGHT,

@@ -1,14 +1,18 @@
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 import { Button } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Camera, Permissions } from 'expo';
 
 export default class ModCamera extends Component {
-  state = {
-    hasCameraPermission: null,
-    type: Camera.Constants.Type.back,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasCameraPermission: null,
+      type: Camera.Constants.Type.back,
+    };
+  }
 
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -49,6 +53,13 @@ export default class ModCamera extends Component {
                 title="Hi!"
                 onPress={() => {console.log('hi')}}
                 color="#841584"
+              />
+              <Button
+                title="Image Picker"
+                style={{ alignSelf: 'flex-end' }}
+                icon={<Icon name={Platform.OS == 'ios' ? 'ios-image' : 'md-image'} size={30} backgroundColor='transparent' color='white'/>}
+                onPress={this.props.action}
+                raised={true}
               />
           </Camera>
         </View>
