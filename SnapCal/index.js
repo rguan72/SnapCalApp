@@ -14,6 +14,9 @@ const MyStatusBar = ({backgroundColor, ...props}) => (
 );
 
 class Index extends Component {
+  static navigationOptions = {
+    header: null,
+  };
 
   render() {
     return (
@@ -40,7 +43,7 @@ class Index extends Component {
             <Button
               buttonStyle={styles.cameraButton}
               onPress={ () => {this.props.navigation.push('ImagePicker')} }
-              icon={<Icon name={Platform.OS == 'ios' ? 'ios-image' : 'md-image'} size={30} backgroundColor='transparent' color='white'/>}
+              icon={<Icon name={Platform.OS == 'ios' ? 'ios-camera' : 'md-camera'} size={30} backgroundColor='transparent' color='white'/>}
               raised={true}
             />
           </View>
@@ -110,12 +113,11 @@ const AppNavigator = createStackNavigator(
   {
     Home: Index,
     Calendar: CalendarUI,
-    ImagePicker: ImagePickerScreen
+    ImagePicker: ImagePickerScreen,
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "ImagePicker"
   }
-
 );
 
 const AppContainer = createAppContainer(AppNavigator);
