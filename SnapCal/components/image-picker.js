@@ -16,7 +16,7 @@ export default class MyImagePicker extends React.Component {
   render() {
     let { image } = this.state;
     ImagePicker.launchCameraAsync ({
-      allowsEditing: true,
+      allowsEditing: false,
     });
 
     return <Calendar />;
