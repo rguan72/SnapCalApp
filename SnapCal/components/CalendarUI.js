@@ -12,7 +12,7 @@ export default class CalendarUI extends Component {
   constructor (props) {
     super (props);
     this.state = {
-      visible: false,
+      visible: true,
       my_event: {
         title: 'Sample Event',
         startDate: start,
