@@ -1,14 +1,17 @@
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, Button, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Dimensions, Text, TouchableOpacity, View, Platform } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Button, withTheme } from 'react-native-elements';
 import { Calendar, Permissions } from 'expo';
 import Dialog, { DialogTitle, DialogFooter, DialogButton, DialogContent } from 'react-native-popup-dialog';
+import { withNavigation } from 'react-navigation';
 
 
 let start = new Date('March 11, 2019 11:25:00');
 let end = new Date('March 11, 2019 12:25:00');
 
-export default class CalendarUI extends Component {
+class CalendarUI extends Component {
   constructor (props) {
     super (props);
     this.state = {
@@ -76,7 +79,31 @@ export default class CalendarUI extends Component {
             <Text>{my_event.timeZone}</Text>
           </DialogContent>
         </Dialog>
+        <Button
+          buttonStyle={styles.cameraButton}
+          onPress={ () => {this.props.navigation.navigate('ImagePicker')} }
+          icon={<Icon name={Platform.OS == 'ios' ? 'ios-camera' : 'md-camera'} size={30} backgroundColor='transparent' color='white'/>}
+          raised={true}
+        />
       </View>
     );
   }
 }
+
+export default withNavigation(CalendarUI);
+
+const styles = StyleSheet.create({
+  cameraButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderRadius: 100,
+    padding: 15,
+    width: Dimensions.get('window').width * 0.175,
+    height: Dimensions.get('window').width * 0.175,
+  },
+  atEnd: {
+    justifyContent: 'flex-end',
+  }
+});

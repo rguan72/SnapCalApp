@@ -116,7 +116,7 @@ const AppNavigator = createStackNavigator(
     ImagePicker: ImagePickerScreen,
   },
   {
-    initialRouteName: "ImagePicker"
+    initialRouteName: "Home"
   }
 );
 
